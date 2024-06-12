@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "diffsimuguide"
+version = "0.1.0"
+description = ""
+authors = ["Bradley-Karat <bkarat@uwo.ca>","Maëliss Jallais <JallaisM@cardiff.ac.uk>"]
+readme = "README.md"
+packages = [{include = "diffsimuguide"}]
+
+[tool.poetry.scripts]
+diffsimgen = "diffsimuguide.run:main"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = ">=1.21.0"
+nibabel = ">=3.2.1"
+#dmipy = ">=1.0.5"
+dmipy = { git = "https://github.com/Bradley-Karat/dmipy.git" }
+uGUIDE = { git = "https://github.com/mjallais/uGUIDE.git" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
