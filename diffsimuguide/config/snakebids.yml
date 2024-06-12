@@ -22,16 +22,15 @@ targets_by_analysis_level:
 #    https://bids-standard.github.io/pybids/generated/bids.layout.BIDSLayout.html#bids.layout.BIDSLayout.get
 
 pybids_inputs:
-  bold:
+  dwi:
     filters:
-      suffix: 'bold'
+      suffix: 'dwi'
       extension: '.nii.gz'
-      datatype: 'func'
+      datatype: 'dwi'
     wildcards:
       - subject
       - session
       - acquisition
-      - task
       - run
 
 #this configures the options to save the BIDSLayout
@@ -83,14 +82,68 @@ parse_args:
 
  # custom command-line parameters can then be added, these will get added to the config
  # below is an example to override config['bet_frac']
-  --smoothing_fwhm:
-      nargs: '+'
-      required: True
 
+  --model:
+    choices:
+      - 'NODDI_watson'
+      - 'ball'
+      - 'stick'
+      - 'ball_stick'
+    default: 
+      - 'ball_stick'
+    nargs: 1
+    required: True
+    help: 'Model to fit diffusion MRI data to.'
 
-#--- workflow specific configuration -- below is just an example:
+  --S0:
+    nargs: '+'
+    required: True
+    help: 'Signal without diffusion weighting. This can be a single value or 
+      array. If you specify two S0 values ([10,100]) then a random S0 value will 
+      be drawn within that range with equal probability. This can help if you want 
+      to cover the range of signals that might be present on a voxel-to-voxel basis. 
+      You can specify the signal at each shell ([10,20,30,40,50]), then the data 
+      will be simulated using only those specified values.'
 
+  --SNR:
+    nargs: '+'
+    required: True
+    help: 'Signal to noise ratio. This can be a single value or 
+      array. If you specify two SNR values ([10,100]) then a random SNR value will 
+      be drawn within that range with equal probability. This can help if you want 
+      to cover the range of SNRs that might be present on a voxel-to-voxel basis.'
 
-#singularity containers
-singularity:
-    fsl: 'docker://brainlife/fsl/6.0.0'
+  --numofsim:
+    nargs: 1
+    help: 'Number of simulations to perform for inference (i.e. size of the test
+      set). (default: %(default)s)'
+    default: 1e6
+
+  --noise_type:
+    choices:
+      - 'rician'
+      - 'gaussian'
+    default: 
+      - 'rician'
+    nargs: 1
+    help: 'Type of synthetic noise to inject into the simulated signal. 
+      (default: %(default)s)'
+
+  --parameter_distributions:
+    help: 'Expert option. Path to a .npy (numpy) array of model parameters 
+      which will be used to simulate signal as opposed to uniform sampling on the 
+      whole parameter range. Useful if you want to simulate signal from realistic 
+      parameter distributions (i.e. have an informative prior from the real 
+      acquired data) *Note* the index of the parameters in the array provided has 
+      to match the order of the parameters seen in the <model>.json file in the 
+      resources folder of DiffSimGen. For example, if you are providing a parameter 
+      distribution for the stick model, the array will be [numofparameters,3] 
+      where the 0th index is theta, the 1st index is phi, and the 2nd index is Dpar 
+      (as seen in stick_parameter_range.json) numofsim samples will be drawn from 
+      the provided parameter distributions with replacement.'
+    nargs: '+'
+
+  --numoffeatures:
+    nargs: 1
+    help: 'Number of features extracted using MLP (default: %(default)s)'
+    default: 32
