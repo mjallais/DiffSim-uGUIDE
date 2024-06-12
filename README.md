@@ -15,3 +15,22 @@ If you are using this repository, please cite μGUIDE (see preprint [here](https
       primaryClass={eess.IV}
 }
 ```
+
+## Installation
+Clone the repository with
+```
+git clone https://github.com/mjallais/DiffSim-uGUIDE.git
+```
+Create a virtual environment with
+```
+python -m venv venv
+```
+Activate it with
+```
+source venv/bin/activate
+```
+then install the required dependencies with
+```
+cd DiffSim-uGUIDE
+pip install .
+```

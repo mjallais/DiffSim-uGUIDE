@@ -1,0 +1,23 @@
+{
+    "Name": "diffsimuguide - BIDS app for estimating posterior distributions of tissue microstructure",
+    "BIDSVersion": "1.4.0",
+    "DatasetType": "derivative",
+    "PipelineDescription":
+        {
+            "Name": "diffsimuguide",
+            "Version": "0.1.0",
+            "CodeURL": "http://github.com/mjallais/diffsimuguide",
+            "Author": "Bradley Karat, Maëliss Jallais",
+            "AuthorEmail": "bkarat@uwo.ca, JallaisM@cardiff.ac.uk"
+        },
+    "GeneratedBy": [
+        {
+            "Name": "diffsimuguide",
+            "Version": "0.1.0",
+            "CodeURL": "http://github.com/mjallais/diffsimuguide",
+            "Author": "Bradley Karat, Maëliss Jallais",
+            "AuthorEmail": "bkarat@uwo.ca, JallaisM@cardiff.ac.uk"
+ 
+        }
+    ]
+}
