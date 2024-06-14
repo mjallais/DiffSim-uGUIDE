@@ -32,6 +32,30 @@ pybids_inputs:
       - session
       - acquisition
       - run
+#  T2w:
+#    filters:
+#      suffix: 'T2w'
+#      extension: '.nii.gz'
+#      datatype: 'anat'
+#      invalid_filters: 'allow'
+#      space: null
+#    wildcards:
+#      - subject
+#      - session
+#      - acquisition
+#      - run
+#  T1w:
+#    filters:
+#      suffix: 'T1w'
+#      extension: '.nii.gz'
+#      datatype: 'anat'
+#      invalid_filters: 'allow'
+#      space: null
+#    wildcards:
+#      - subject
+#      - session
+#      - acquisition
+#      - run
 
 #this configures the options to save the BIDSLayout
 # by default, database is not saved (uncomment to save)
@@ -89,25 +113,17 @@ parse_args:
       - 'ball'
       - 'stick'
       - 'ball_stick'
+      - 'zeppelin'
+      - 'VERDICT'
     default: 
       - 'ball_stick'
     nargs: 1
     required: True
     help: 'Model to fit diffusion MRI data to.'
 
-  --S0:
-    nargs: '+'
-    required: True
-    help: 'Signal without diffusion weighting. This can be a single value or 
-      array. If you specify two S0 values ([10,100]) then a random S0 value will 
-      be drawn within that range with equal probability. This can help if you want 
-      to cover the range of signals that might be present on a voxel-to-voxel basis. 
-      You can specify the signal at each shell ([10,20,30,40,50]), then the data 
-      will be simulated using only those specified values.'
-
   --SNR:
     nargs: '+'
-    required: True
+    required: False
     help: 'Signal to noise ratio. This can be a single value or 
       array. If you specify two SNR values ([10,100]) then a random SNR value will 
       be drawn within that range with equal probability. This can help if you want 
@@ -141,9 +157,18 @@ parse_args:
       where the 0th index is theta, the 1st index is phi, and the 2nd index is Dpar 
       (as seen in stick_parameter_range.json) numofsim samples will be drawn from 
       the provided parameter distributions with replacement.'
+    default: False
     nargs: '+'
+
+  --no_QC:
+    help: 'Will plot figures to check results. (default: %(default)s) '
+    default: false
+    action: 'store_true'
 
   --numoffeatures:
     nargs: 1
     help: 'Number of features extracted using MLP (default: %(default)s)'
     default: 32
+
+ball_params: ['diso'] 
+NODDI_watson_params: ['theta','phi','ODI','stick_fraction_within_watson','ball_fraction','total_watson_fraction']
